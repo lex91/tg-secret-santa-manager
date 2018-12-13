@@ -7,7 +7,8 @@
   "author": "Alexey Krasnyanskiy",
   "license": "MIT",
   "scripts": {
-    "start": "node --inspect --require dotenv/config ./index.js"
+    "start": "node ./index.js",
+    "start:dev": "node --inspect --require dotenv/config ./index.js"
   },
   "dependencies": {
     "dotenv": "^6.2.0",
