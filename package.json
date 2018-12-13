@@ -5,5 +5,11 @@
   "main": "index.js",
   "repository": "git@github.com:lex91/tg-secret-santa-manager.git",
   "author": "Alexey Krasnyanskiy",
-  "license": "MIT"
+  "license": "MIT",
+  "scripts": {
+    "start": "node --require dotenv/config ./index.js"
+  },
+  "dependencies": {
+    "dotenv": "^6.2.0"
+  }
 }
