@@ -1,0 +1,9 @@
+{
+  "name": "tg-secret-santa-manager",
+  "version": "0.0.1",
+  "description": "SecretSantaManager bot for telegram",
+  "main": "index.js",
+  "repository": "git@github.com:lex91/tg-secret-santa-manager.git",
+  "author": "Alexey Krasnyanskiy",
+  "license": "MIT"
+}
