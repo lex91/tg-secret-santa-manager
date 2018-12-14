@@ -1,5 +1,3 @@
-const Stage = require('telegraf/stage');
-
-const registration = require('../scenes/registration');
-
-module.exports = Stage.enter(registration.name);
+module.exports = (ctx) => ctx.reply(
+  `Привет! Если хочешь участвовать в жеребьёвке - скажи пароль. Я не общаюсь с незнакомцами!`
+);

@@ -1,6 +1,4 @@
 const Telegraf = require('telegraf');
-const Stage = require('telegraf/stage');
-const session = require('telegraf/session');
 
 const ownCommand = require('./commands/own');
 const initCommand = require('./commands/init');
@@ -9,27 +7,30 @@ const gameNotStartedStubCommand = require('./commands/gameNotStartedStub');
 const helpCommand = require('./commands/help');
 const drawUsersCommand = require('./commands/drawUsers');
 const listCommand = require('./commands/list');
-const registration = require('./scenes/registration');
+const processPasswordCommand = require('./commands/processPassword');
+
 const selectUser = require('./utils/selectUser');
 
 module.exports = ({ bot, store }) => {
   const isOwnerMessage = (ctx) => store.isOwner(selectUser(ctx));
   const isGameStarted = (_ctx) => store.isGameStarted();
-
-  bot.use(session());
-
-  const stage = new Stage([registration.scene]);
-  bot.use(stage.middleware());
+  const isPrivateChat = (ctx) => ctx.chat && ctx.chat.type === 'private';
 
   bot.start(
     Telegraf.branch(
-      isGameStarted,
+      isPrivateChat,
       startCommand,
-      gameNotStartedStubCommand
+      (ctx) => ctx.reply('OK')
     )
   );
 
-  bot.help(helpCommand);
+  bot.help(
+    Telegraf.branch(
+      isGameStarted,
+      helpCommand,
+      gameNotStartedStubCommand
+    )
+  );
 
   bot.command(
     'own',
@@ -61,15 +62,15 @@ module.exports = ({ bot, store }) => {
     ),
   );
 
-  const { BOT_TOKEN, URL, PORT, NODE_ENV } = process.env;
-  if (NODE_ENV === 'production') {
-
-    console.warn(`starting in PROD: `, BOT_TOKEN, URL, PORT);
-
-    bot.telegram.setWebhook(`${URL}/bot${BOT_TOKEN}`);
-    bot.startWebhook(`/bot${BOT_TOKEN}`, null, PORT);
-  } else {
-    console.warn(`starting in DEV mode`, BOT_TOKEN, URL, PORT);
-    bot.startPolling();
-  }
+  bot.on(
+    'message',
+    Telegraf.optional(
+      isPrivateChat,
+      Telegraf.branch(
+        isGameStarted,
+        processPasswordCommand,
+        gameNotStartedStubCommand,
+      )
+    )
+  );
 };

@@ -3,3 +3,4 @@ const configureBot = require('./configureBot');
 const store = require('./store');
 
 botService.configure({ store, configureBot });
+botService.start();

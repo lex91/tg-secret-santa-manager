@@ -17,6 +17,6 @@ module.exports = (ctx) => {
     store.users.add(user);
     botService.sendMessageToChat(`Новый участник: ${userToString(user)}!`);
 
-    return ctx.reply('Хорошо, добавлю тебя в список!');
+    return ctx.reply('Добавил тебя в список!');
   }
 };

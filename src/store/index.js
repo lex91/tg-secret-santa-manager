@@ -2,12 +2,13 @@ const Users = require('./Users');
 
 class Store {
   constructor() {
-    this.reset();
+    this.init({ chat: null, password: null });
+    this.owner = null;
   }
 
-  reset() {
-    this.owner = null;
-    this.chat = null;
+  init({ chat, password }) {
+    this.chat = chat;
+    this.password = password;
     this.users = new Users();
   }
 
@@ -17,6 +18,10 @@ class Store {
 
   isOwner(user) {
     return user && this.owner && user.id === this.owner.id;
+  }
+
+  checkPassword(password) {
+    return password === this.password;
   }
 }
 
