@@ -1,21 +1,17 @@
-const { calculateShuffledArray, userToString } = require('./utils');
+const userToString = require('../utils/userToString');
+const calculateShuffledArray = require('../utils/calculateShuffledArray');
 
-class Users {
+module.exports = class {
   constructor() {
     this.data = new Map();
   }
 
-  add(user, onSuccess, onDuplicate) {
-    if (!this.data.has(user.id)) {
-      this.data.set(user.id, user);
-      if (onSuccess) {
-        onSuccess();
-      }
-    } else {
-      if (onDuplicate) {
-        onDuplicate();
-      }
-    }
+  add(user) {
+    this.data.set(user.id, user);
+  }
+
+  has(user) {
+    return this.data.has(user.id);
   }
 
   calculateMap() {
@@ -43,6 +39,4 @@ class Users {
 
     return result;
   }
-}
-
-module.exports = Users;
+};
